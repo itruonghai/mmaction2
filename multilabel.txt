@@ -1,0 +1,13 @@
+Offensive
+Defensive
+Serve
+Forehand
+Backhand
+Loop
+Backspin
+Sidespin
+Topspin
+Hit
+Push
+Flip
+Block
