@@ -33,7 +33,7 @@ ann_file_train = 'data/kinetics400/kinetics400_train_list_rawframes.txt'
 ann_file_val = 'data/kinetics400/kinetics400_val_list_rawframes.txt'
 ann_file_test = 'data/kinetics400/kinetics400_val_list_rawframes.txt'
 img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_bgr=False)
+    mean=[132.3336, 124.4257,  88.7625], std=[48.6064, 41.9180, 43.2905], to_bgr=False)
 train_pipeline = [
     dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1),
     dict(type='RawFrameDecode'),

@@ -14,7 +14,7 @@ model = dict(
         zero_init_residual=False),
     cls_head=dict(
         type='I3DHead',
-        num_classes=400,
+        num_classes=20,
         in_channels=2048,
         spatial_type='avg',
         dropout_ratio=0.5,
@@ -30,10 +30,10 @@ ann_file_train = 'data/kinetics400/kinetics400_train_list_rawframes.txt'
 ann_file_val = 'data/kinetics400/kinetics400_val_list_rawframes.txt'
 ann_file_test = 'data/kinetics400/kinetics400_val_list_rawframes.txt'
 img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_bgr=False)
+    mean=[132.3336, 124.4257,  88.7625], std=[48.6064, 41.9180, 43.2905], to_bgr=False)
 train_pipeline = [
     dict(type='SampleFrames', clip_len=32, frame_interval=2, num_clips=1),
-    dict(type='FrameSelector'),
+    dict(type='RawFrameDecode'),
     dict(type='Resize', scale=(-1, 256)),
     dict(type='RandomResizedCrop'),
     dict(type='Resize', scale=(224, 224), keep_ratio=False),
@@ -50,7 +50,7 @@ val_pipeline = [
         frame_interval=2,
         num_clips=1,
         test_mode=True),
-    dict(type='FrameSelector'),
+    dict(type='RawFrameDecode'),
     dict(type='Resize', scale=(-1, 256)),
     dict(type='CenterCrop', crop_size=224),
     dict(type='Flip', flip_ratio=0),
@@ -64,11 +64,11 @@ test_pipeline = [
         type='SampleFrames',
         clip_len=32,
         frame_interval=2,
-        num_clips=10,
+        num_clips=1,
         test_mode=True),
-    dict(type='FrameSelector'),
+    dict(type='RawFrameDecode'),
     dict(type='Resize', scale=(-1, 256)),
-    dict(type='ThreeCrop', crop_size=256),
+    dict(type='CenterCrop', crop_size=224),
     dict(type='Flip', flip_ratio=0),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='FormatShape', input_format='NCTHW'),
@@ -106,9 +106,9 @@ lr_config = dict(
     warmup_by_epoch=True,
     warmup_iters=16)
 total_epochs = 58
-checkpoint_config = dict(interval=2)
+checkpoint_config = dict(interval=1)
 evaluation = dict(
-    interval=5, metrics=['top_k_accuracy', 'mean_class_accuracy'], topk=(1, 5))
+    interval=1, metrics=['top_k_accuracy', 'mean_class_accuracy'], topk=(1, 3))
 log_config = dict(
     interval=20,
     hooks=[dict(type='TextLoggerHook'),
